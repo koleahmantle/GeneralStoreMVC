@@ -1,7 +1,56 @@
 ﻿@model IEnumerable<GeneralStoreMVC.Models.Product>
+
+
 @{
-    ViewBag.Title = "index";
+    ViewBag.Title = "Index";
 }
 
-<h2>index</h2>
+<h2>Index</h2>
+
+<h2>List of Products</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InventoryCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsFood)
+        </th>
+    </tr>
+    <tr>
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td>
+            @Html.DisplayFor(model => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.InventoryCount)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.IsFood)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ProductId })
+            @Html.ActionLink("More Information", "Details", new { id = item.ProductId })
+            @Html.ActionLink("Remove", "Delete", new { id = item.ProductId })
+        </td>
+    </tr>
+        }
+    </table>
+
 
