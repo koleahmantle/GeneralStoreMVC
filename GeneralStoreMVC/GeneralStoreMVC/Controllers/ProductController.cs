@@ -17,7 +17,9 @@ namespace GeneralStoreMVC.Controllers
         public ActionResult Index()
         {
             // See Below (modifying ApplicattionDbContext class)
-            return View(_db.Products.ToList());
+            List<Product> productList = _db.Products.ToList();
+            List<Product> orderedList = productList.OrderBy(prod => prod.Name).ToList();
+            return View(orderedList);
         }
 
         //GET: Product
@@ -54,16 +56,16 @@ namespace GeneralStoreMVC.Controllers
             return View(product);
         }
 
-        ////POST: Product/Delete/{id}
-        //[HttpPost, ActionName ("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id)
-        //{
-        //    //Product product = new _db.Projects.Find(id);
-        //    _db.Products.Remove(product);
-        //    _db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
+        //POST: Product/Delete/{id}
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            Product product = _db.Products.Find(id);
+            _db.Products.Remove(product);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
         //GET: product/edit/{id}
         public ActionResult Edit(int? id)
@@ -90,6 +92,21 @@ namespace GeneralStoreMVC.Controllers
                 _db.Entry(product).State = EntityState.Modified;
                 _db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+            return View(product);
+        }
+
+        //GET: product/details/{id}
+        public ActionResult Details(int? id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Product product = _db.Products.Find(id);
+            if (product == null)
+            {
+                return HttpNotFound();
             }
             return View(product);
         }
